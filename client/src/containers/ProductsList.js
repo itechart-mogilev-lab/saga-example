@@ -5,7 +5,7 @@ import { loadProducts } from "../actions/products.actions";
 
 class ProductsList extends React.Component {
   componentDidMount() {
-    this.props.loadProducts();
+    if (this.props.list.length === 0) this.props.loadProducts();
   }
 
   getLoadingState = () => <div>Loading....</div>;

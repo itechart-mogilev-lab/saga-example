@@ -24,7 +24,7 @@ function* loadProductSaga({ payload: id }) {
   console.log(products.list);
 
   if (theProduct) {
-    put(productLoaded(theProduct));
+    yield put(productLoaded(theProduct));
     return;
   }
 
