@@ -1,6 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
 
-export default class ProductDetails extends React.Component {
+class ProductDetails extends React.Component {
   state = {
     id: 1,
     shortDescription: "Product #1",
@@ -44,3 +45,5 @@ export default class ProductDetails extends React.Component {
     );
   }
 }
+
+export default connect()(ProductDetails);

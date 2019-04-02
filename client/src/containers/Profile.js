@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
   state = {
     givenName: "Ruslan",
     familyName: "Kutynko",
@@ -59,3 +60,5 @@ export default class Profile extends React.Component {
     );
   }
 }
+
+export default connect()(Profile);

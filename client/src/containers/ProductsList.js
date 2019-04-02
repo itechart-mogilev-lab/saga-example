@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-export default class ProductsList extends React.Component {
+class ProductsList extends React.Component {
   state = {
     list: [
       { id: 1, description: "Product #1", price: 13.2, count: 55 },
@@ -45,3 +46,5 @@ export default class ProductsList extends React.Component {
     );
   }
 }
+
+export default connect()(ProductsList);
