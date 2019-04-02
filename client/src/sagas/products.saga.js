@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, select, spawn, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 import {
   productsLoaded,
@@ -17,6 +17,18 @@ export function* watchLoadProductsSaga() {
 }
 
 function* loadProductSaga({ payload: id }) {
+  const products = yield select(state => state.products);
+  console.log(id);
+
+  const theProduct = products.list.find(p => p.id == id);
+  console.log(products.list);
+
+  if (theProduct) {
+    put(productLoaded(theProduct));
+    return;
+  }
+
+  yield spawn(loadProductsSaga);
   const response = yield call(axios.get, "/api/products/" + id);
   yield put(productLoaded(response.data));
 }
