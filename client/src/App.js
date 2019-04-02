@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink
-} from "react-router-dom";
+import { Switch, Route, NavLink } from "react-router-dom";
+import { ConnectedRouter as Router } from "connected-react-router";
 import { Provider } from "react-redux";
-import reduxStore from "./redux";
+import reduxStore, { history } from "./redux";
 import { initializePreviousToken } from "./authentication";
 
 import "./App.css";
@@ -23,7 +19,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={reduxStore}>
-        <Router>
+        <Router history={history}>
           <header>
             <h1>Redux-Saga demo</h1>
             <nav>
