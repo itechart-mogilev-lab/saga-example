@@ -10,7 +10,18 @@ export const userLoginSuccess = (token, user) => ({
   payload: { token, user }
 });
 
-export const USER_LOGOUT = "user logout";
-export const userLogout = () => ({
-  type: USER_LOGOUT
+export const LOGOUT_USER = "user logout";
+export const logoutUser = () => ({
+  type: LOGOUT_USER
+});
+
+export const LOGIN_USER = "login user";
+export const loginUser = (login, password) => ({
+  type: LOGIN_USER,
+  payload: { login, password }
+});
+
+export const LOAD_USER = "load user";
+export const loadUser = () => ({
+  type: LOAD_USER
 });

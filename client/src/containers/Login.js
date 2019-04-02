@@ -1,9 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import axios from "axios";
-
-import { userLoginSuccess } from "../actions/user.actions";
-import { storeToken } from "../authentication";
+import { loginUser } from "../actions/user.actions";
 
 class Login extends React.Component {
   login = React.createRef();
@@ -12,18 +9,10 @@ class Login extends React.Component {
   handleLogin = e => {
     e.preventDefault();
 
-    // ASYNC CALL
-    axios
-      .post("/api/login", {
-        login: this.login.current.value,
-        password: this.password.current.value
-      })
-      .then(response => {
-        this.props.userLoginSuccess(response.data.token, response.data.user);
-        storeToken(response.data.token, response.data.user);
-        this.props.history.push("/");
-      });
+    this.props.loginUser(this.login.current.value, this.password.current.value);
 
+    //TODO: fix with redux router
+    // this.props.history.push("/");
     return false;
   };
 
@@ -57,5 +46,5 @@ class Login extends React.Component {
 
 export default connect(
   null,
-  { userLoginSuccess }
+  { loginUser }
 )(Login);

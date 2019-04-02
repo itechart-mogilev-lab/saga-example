@@ -1,14 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import axios from "axios";
-import { userLoaded } from "../actions/user.actions";
+import { loadUser } from "../actions/user.actions";
 
 class Profile extends React.Component {
   componentDidMount() {
-    axios.get("/api/users/current").then(response => {
-      this.props.userLoaded(response.data);
-    });
+    this.props.loadUser();
   }
 
   getLoadingState = () => <div>Loading....</div>;
@@ -72,5 +69,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { userLoaded }
+  { loadUser }
 )(Profile);

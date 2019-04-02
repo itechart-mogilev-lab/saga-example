@@ -9,3 +9,14 @@ export const productLoaded = data => ({
   type: PRODUCT_LOADED,
   payload: data
 });
+
+export const LOAD_PRODUCTS = "load products";
+export const loadProducts = () => ({
+  type: LOAD_PRODUCTS
+});
+
+export const LOAD_PRODUCT = "load product";
+export const loadProduct = id => ({
+  type: LOAD_PRODUCT,
+  payload: id
+});

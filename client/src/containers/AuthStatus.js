@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { userLogout } from "../actions/user.actions";
-import { clearToken } from "../authentication";
+import { logoutUser } from "../actions/user.actions";
 
 class AuthStatus extends React.Component {
   getAnonymousView = () => (
@@ -13,15 +12,7 @@ class AuthStatus extends React.Component {
 
   getUserView = user => (
     <div>
-      Hello, {user.name}.
-      <button
-        onClick={() => {
-          this.props.userLogout();
-          clearToken();
-        }}
-      >
-        Logout
-      </button>
+      Hello, {user.name}.<button onClick={this.props.logoutUser}>Logout</button>
     </div>
   );
 
@@ -41,5 +32,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { userLogout }
+  { logoutUser }
 )(AuthStatus);

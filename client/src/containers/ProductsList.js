@@ -1,14 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import axios from "axios";
-import { productsLoaded } from "../actions/products.actions";
+import { loadProducts } from "../actions/products.actions";
 
 class ProductsList extends React.Component {
   componentDidMount() {
-    axios.get("/api/products").then(response => {
-      this.props.productsLoaded(response.data);
-    });
+    this.props.loadProducts();
   }
 
   getLoadingState = () => <div>Loading....</div>;
@@ -58,5 +55,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { productsLoaded }
+  { loadProducts }
 )(ProductsList);

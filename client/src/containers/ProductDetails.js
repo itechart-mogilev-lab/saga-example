@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import axios from "axios";
-import { productLoaded } from "../actions/products.actions";
+import { loadProduct } from "../actions/products.actions";
 
 class ProductDetails extends React.Component {
   buy = () => {
@@ -9,9 +8,7 @@ class ProductDetails extends React.Component {
   };
 
   componentDidMount() {
-    axios.get("/api/products/" + this.props.match.params.id).then(response => {
-      this.props.productLoaded(response.data);
-    });
+    this.props.loadProduct(this.props.match.params.id);
   }
 
   getLoadingState = () => <div>Loading....</div>;
@@ -59,5 +56,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { productLoaded }
+  { loadProduct }
 )(ProductDetails);
