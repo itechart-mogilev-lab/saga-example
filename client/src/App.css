@@ -1,0 +1,7 @@
+header a {
+  margin: 0 1em;
+}
+
+header a:first-of-type {
+  margin-left: 0;
+}
