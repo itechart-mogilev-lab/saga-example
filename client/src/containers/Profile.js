@@ -1,19 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import axios from "axios";
+import { userLoaded } from "../actions/user.actions";
 
 class Profile extends React.Component {
-  state = {
-    givenName: "Ruslan",
-    familyName: "Kutynko",
-    orders: [
-      { id: 1, description: "Product #1", price: 13.2, date: new Date() },
-      { id: 2, description: "Product #2", price: 4, date: new Date() },
-      { id: 3, description: "Product #3", price: 113.2, date: new Date() }
-    ]
-  };
+  componentDidMount() {
+    axios.get("/api/users/current").then(response => {
+      this.props.userLoaded(response.data);
+    });
+  }
+
+  getLoadingState = () => <div>Loading....</div>;
+
   render() {
-    return (
+    const user = this.props.user;
+
+    return !user.givenName ? (
+      this.getLoadingState()
+    ) : (
       <>
         <h2>Profile</h2>
 
@@ -24,11 +29,11 @@ class Profile extends React.Component {
             <tbody>
               <tr>
                 <td>Given name:</td>
-                <td>{this.state.givenName}</td>
+                <td>{user.givenName}</td>
               </tr>
               <tr>
                 <td>Family name:</td>
-                <td>{this.state.familyName}</td>
+                <td>{user.familyName}</td>
               </tr>
             </tbody>
           </table>
@@ -43,7 +48,7 @@ class Profile extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.orders.map(o => (
+              {user.orders.map(o => (
                 <tr key={o.id}>
                   <td>{o.id}</td>
                   <td>
@@ -61,4 +66,11 @@ class Profile extends React.Component {
   }
 }
 
-export default connect()(Profile);
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(
+  mapStateToProps,
+  { userLoaded }
+)(Profile);

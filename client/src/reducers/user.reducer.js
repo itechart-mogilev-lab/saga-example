@@ -6,16 +6,22 @@ import {
 
 export default (state = {}, action) => {
   switch (action.type) {
-    case USER_LOADED:
-      return { ...state, ...action.payload };
+    case USER_LOADED: {
+      const user = action.payload;
+      user.orders.forEach(o => (o.date = new Date(o.date)));
 
-    case USER_LOGIN_SUCCESS:
+      return { ...state, ...user, name: formatUserName(user) };
+    }
+    case USER_LOGIN_SUCCESS: {
+      const user = action.payload.user;
+      user.orders = user.orders || [];
+
       return {
         isAuthenticated: !!action.payload.token,
         name: formatUserName(action.payload.user),
         ...action.payload.user
       };
-
+    }
     case USER_LOGOUT:
       return {
         isAuthenticated: false

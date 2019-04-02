@@ -1,23 +1,26 @@
 import React from "react";
 import { connect } from "react-redux";
+import axios from "axios";
+import { productLoaded } from "../actions/products.actions";
 
 class ProductDetails extends React.Component {
-  state = {
-    id: 1,
-    shortDescription: "Product #1",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus blanditiis quo consectetur modi culpa repellendus beatae molestias iste excepturi, sint iusto cupiditate minus libero temporibus aliquam dolorem magni at veritatis!",
-    price: 13.2,
-    count: 55
-  };
-
   buy = () => {
     alert("buy");
   };
 
+  componentDidMount() {
+    axios.get("/api/products/" + this.props.match.params.id).then(response => {
+      this.props.productLoaded(response.data);
+    });
+  }
+
+  getLoadingState = () => <div>Loading....</div>;
+
   render() {
-    const p = this.state;
-    return (
+    const p = this.props.product;
+    return !p.id ? (
+      this.getLoadingState()
+    ) : (
       <>
         <h2>Product Details, ID={this.props.match.params.id}</h2>
         <table>
@@ -29,6 +32,10 @@ class ProductDetails extends React.Component {
             <tr>
               <td>Description</td>
               <td>{p.description}</td>
+            </tr>
+            <tr>
+              <td>Details</td>
+              <td>{p.longDescription}</td>
             </tr>
             <tr>
               <td>Price</td>
@@ -46,4 +53,11 @@ class ProductDetails extends React.Component {
   }
 }
 
-export default connect()(ProductDetails);
+const mapStateToProps = state => ({
+  product: state.products.product
+});
+
+export default connect(
+  mapStateToProps,
+  { productLoaded }
+)(ProductDetails);

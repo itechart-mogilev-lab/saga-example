@@ -1,19 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import axios from "axios";
+import { productsLoaded } from "../actions/products.actions";
 
 class ProductsList extends React.Component {
-  state = {
-    list: [
-      { id: 1, description: "Product #1", price: 13.2, count: 55 },
-      { id: 2, description: "Product #2", price: 4, count: 5522 },
-      { id: 3, description: "Product #3", price: 113.2, count: 43 },
-      { id: 4, description: "Product #4", price: 11.6, count: 14 },
-      { id: 5, description: "Product #5", price: 13.3, count: 5 }
-    ]
-  };
+  componentDidMount() {
+    axios.get("/api/products").then(response => {
+      this.props.productsLoaded(response.data);
+    });
+  }
+
+  getLoadingState = () => <div>Loading....</div>;
+
   render() {
-    return (
+    const list = this.props.list;
+
+    return !list.length ? (
+      this.getLoadingState()
+    ) : (
       <>
         <h2>Products list</h2>
 
@@ -28,7 +33,7 @@ class ProductsList extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.list.map(p => (
+            {list.map(p => (
               <tr key={p.id}>
                 <td>{p.id}</td>
                 <td>{p.description}</td>
@@ -47,4 +52,11 @@ class ProductsList extends React.Component {
   }
 }
 
-export default connect()(ProductsList);
+const mapStateToProps = state => ({
+  list: state.products.list
+});
+
+export default connect(
+  mapStateToProps,
+  { productsLoaded }
+)(ProductsList);
