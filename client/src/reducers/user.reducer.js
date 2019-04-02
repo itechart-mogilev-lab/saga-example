@@ -1,7 +1,7 @@
 import {
   USER_LOADED,
   USER_LOGIN_SUCCESS,
-  LOGOUT_USER
+  USER_LOGOUT_SUCCESS
 } from "../actions/user.actions";
 
 export default (state = {}, action) => {
@@ -22,7 +22,7 @@ export default (state = {}, action) => {
         ...action.payload.user
       };
     }
-    case LOGOUT_USER:
+    case USER_LOGOUT_SUCCESS:
       return {
         isAuthenticated: false
       };

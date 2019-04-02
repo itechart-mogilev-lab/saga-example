@@ -1,9 +1,10 @@
-import { call, put, take, takeLeading } from "redux-saga/effects";
+import { call, put, take, takeLeading, takeEvery } from "redux-saga/effects";
 import { push } from "connected-react-router";
 import {
   LOGIN_USER,
   LOGOUT_USER,
-  userLoginSuccess
+  userLoginSuccess,
+  userLogoutSuccess
 } from "../actions/user.actions";
 import axios from "axios";
 import { storeToken, clearToken } from "../authentication";
@@ -18,6 +19,12 @@ export function* watchLoginSaga() {
     yield put(push("/"));
 
     yield take(LOGOUT_USER);
+  });
+}
+
+export function* watchLogoutSaga() {
+  yield takeEvery(LOGOUT_USER, function*() {
     yield call(clearToken);
+    yield put(userLogoutSuccess());
   });
 }

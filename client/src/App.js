@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
-import { ConnectedRouter as Router } from "connected-react-router";
-import { Provider } from "react-redux";
-import reduxStore, { history } from "./redux";
-import { initializePreviousToken } from "./authentication";
+import { connect } from "react-redux";
 
 import "./App.css";
 
@@ -13,31 +10,34 @@ import ProductDetails from "./containers/ProductDetails";
 import AuthStatus from "./containers/AuthStatus";
 import Login from "./containers/Login";
 
-initializePreviousToken(reduxStore);
-
 class App extends Component {
   render() {
+    const isAuthenticated = this.props.isAuthenticated;
     return (
-      <Provider store={reduxStore}>
-        <Router history={history}>
-          <header>
-            <h1>Redux-Saga demo</h1>
-            <nav>
-              <NavLink to="/products">Products</NavLink>
-              <NavLink to="/profile">Profile</NavLink>
-            </nav>
-            <AuthStatus />
-          </header>
-          <Switch>
-            <Route path="/products" exact component={ProductsList} />
-            <Route path="/products/:id" component={ProductDetails} />
+      <>
+        <header>
+          <h1>Redux-Saga demo</h1>
+          <nav>
+            <NavLink to="/products">Products</NavLink>
+            {isAuthenticated ? <NavLink to="/profile">Profile</NavLink> : null}
+          </nav>
+          <AuthStatus />
+        </header>
+        <Switch>
+          <Route path="/products" exact component={ProductsList} />
+          <Route path="/products/:id" component={ProductDetails} />
+          {isAuthenticated ? (
             <Route path="/profile" component={Profile} />
-            <Route path="/login" component={Login} />
-          </Switch>
-        </Router>
-      </Provider>
+          ) : null}
+          {!isAuthenticated ? <Route path="/login" component={Login} /> : null}
+        </Switch>
+      </>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated
+});
+
+export default connect(mapStateToProps)(App);
